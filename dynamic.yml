@@ -1,0 +1,13 @@
+---
+- name: Ensure dynamic.html page is copied to the /var/www/html/ecomm in n1 server
+  hosts: n1
+  become: yes
+  vars:
+   user_name: Rajasekhar
+  tasks:
+   
+   - name: copy the file
+     template:
+      src: dynamic.j2
+      dest: /var/www/html/ecomm/dynamic.html
+...
