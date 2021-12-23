@@ -1,0 +1,64 @@
+---
+- name: Ensure ecomm and food app deployement
+  hosts: n2
+  become: yes
+  tasks:
+  
+   - name: Install apache-httpd
+     yum:
+      name: httpd
+      state: installed
+
+   - name: Start apache-httpd
+     service: 
+      name: httpd
+      state: started
+
+   - name: Enable apach-httpd
+     service:
+      name: httpd
+      enabled: yes
+
+   - name: Install git
+     yum:
+      name: git
+      state: installed
+
+   - name: Remove html directory
+     file:
+      path: /var/www/html
+      state: absent
+      remote_src: yes
+
+   - name: Create html directory
+     file:
+      path: /var/www/html
+      state: directory
+      remote_src: yes
+ 
+   - name: Clone the repository
+     git:
+      repo: https://github.com/rajasekhar2304/ecomm.git
+      dest: /var/www/html/ecomm
+
+   - name: Clone the repository
+     git:
+      repo: https://github.com/rajasekhar2304/food.git
+      dest: /var/www/html/food
+
+   - name: Copy the httpd.conf
+     copy:
+      src: httpd.conf
+      dest: /etc/httpd/conf/httpd.conf
+
+   - name: Enable setenfoce
+     selinux:
+      policy: targeted
+      state: permissive
+
+   - name: Restart httpd
+     service:
+      name: httpd
+      state: restarted
+
+...
