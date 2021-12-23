@@ -1,0 +1,32 @@
+---
+- name: Ensure ecomm app deployement
+  hosts: all
+  become: yes
+  tasks:
+  
+   - name: Install apache-httpd
+     yum:
+      name: httpd
+      state: installed
+
+   - name: Start apache-httpd
+     service: 
+      name: httpd
+      state: started
+
+   - name: Enable apach-httpd
+     service:
+      name: httpd
+      enabled: yes
+
+   - name: Install git
+     yum:
+      name: git
+      state: installed
+
+   - name: Clone the repository
+     git:
+      repo: https://github.com/rajasekhar2304/ecomm.git
+      dest: /var/www/html
+
+...
